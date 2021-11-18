@@ -58,7 +58,7 @@ code {
   height: 180px;
   margin: auto;
   position: absolute;
-  background-color: #bbb;
+  background-color: #999999;
   color: black;
 }
 
@@ -69,7 +69,7 @@ code {
 
 /* back create card */
 .credit-card-back {
-  background-color: #bbb;
+  background-color: #999999;
   border-radius: 14.5px;
   width: 290px;
   height: 180px;
@@ -91,10 +91,9 @@ code {
   height: 28px;
   top: 45%;
   left: 10%;
-  font-family: Consolas, Courier, monospace;
-  font-size: 18px;
-  /* font-size: 20px; */
+  font-size: 20px;
   position: absolute;
+  font-weight: 700;
 }
 
 .card-name {
@@ -102,12 +101,12 @@ code {
   height: 28px;
   bottom: 15%;
   left: 10%;
-  font-family: Consolas, Courier, monospace;
   text-align: left;
   text-overflow: ellipsis;
   text-transform: uppercase;
   width: 60%;
   position: absolute;
+  font-weight: 600;
 }
 
 .card-expire {
@@ -124,7 +123,6 @@ code {
 }
 
 .expire-value {
-  font-family: Consolas, Courier, monospace;
   font-size: 16px;
 }
 
@@ -155,7 +153,6 @@ code {
 
 .card-cvc {
   color: #222;
-  font-family: Consolas, Courier, monospace;
   font-size: 14px;
   left: 67%;
   line-height: 1;
@@ -270,4 +267,16 @@ code {
   background-image: linear-gradient(#ffffff, #d5d5d5);
   border: 1px solid #d5d5d5;
   color: #555;
+}
+
+.card-text {
+  color: #ebebeb;
+  opacity: 0.8;
+  transform: opacity 0.3s;
+}
+
+.card-text-focus {
+  color: white;
+  font-weight: 700;
+  opacity: 1;
 }

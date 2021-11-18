@@ -27,6 +27,8 @@ function App() {
             onChange={(e) => handleChange(e)}
             maxLength={19}
             placeholder="Card Number"
+            onFocus={() => setIsFocus({ ...isFocus, number: true })}
+            onBlur={() => setIsFocus({ ...isFocus, number: false })}
           />
           <span
             className="error-text"
@@ -45,6 +47,8 @@ function App() {
             onChange={(e) => handleChange(e)}
             maxLengt={12}
             placeholder="Name"
+            onFocus={() => setIsFocus({ ...isFocus, name: true })}
+            onBlur={() => setIsFocus({ ...isFocus, name: false })}
           />
           <span
             className="error-text"
@@ -63,14 +67,19 @@ function App() {
               name="expiry"
               value={values.expiry}
               onChange={(e) => handleChange(e)}
-              maxLengt={12}
+              maxLength={5}
               placeholder="Valud Thru"
+              onFocus={() => setIsFocus({ ...isFocus, expiry: true })}
+              onBlur={() => setIsFocus({ ...isFocus, expiry: false })}
             />
             <span
               className="half-error-text"
-              style={{ visibility: errors.expiry ? "visible" : "hidden" }}
+              style={{
+                visibility:
+                  errors.expiry || errors.expiryMonth ? "visible" : "hidden",
+              }}
             >
-              required
+              {errors.expiry ? " required" : "a month must be between 1 - 12"}
             </span>
           </div>
           <div>

@@ -11,22 +11,31 @@ function FormHandle() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // console.log(`name`, name);
-    // console.log(`value`, value);
+
     if (name === "number") {
-      setValues({
-        ...values,
-        number: value,
-      });
+      let cardNumber = value.replace(/^\D/g, "");
+      let cardNumberGroup = cardNumber.match(/\d{1,4}/g);
+      if (cardNumberGroup) {
+        cardNumber = cardNumberGroup.join(" ");
+      }
+      setValues({ ...values, number: cardNumber });
     }
     if (name === "name") {
       setValues({ ...values, name: value });
     }
     if (name === "expiry") {
-      setValues({ ...values, expiry: value });
+      let expireDate = value.replace(/^\D/g, "");
+      let expireDateGroup = expireDate.match(/\d{1,2}/g);
+      if (expireDateGroup) {
+        expireDate = expireDateGroup.join("/");
+      }
+      setValues({ ...values, expiry: expireDate });
     }
     if (name === "cvc") {
-      setValues({ ...values, cvc: value.replace(/\D/g, "") });
+      setValues({
+        ...values,
+        cvc: value.replace(/^\D/g, ""),
+      });
     }
     validateForm({ [name]: value });
   };
@@ -43,6 +52,14 @@ function FormHandle() {
     if ("expiry" in fieldValue) {
       temp.expiry = !fieldValue.expiry;
     }
+    if ("expiry" in fieldValue && fieldValue.expiry.length > 2) {
+      let getTwoDigit = fieldValue.expiry.substring(0, 2);
+      if (getTwoDigit > 12) {
+        temp.expiryMonth = true;
+      } else {
+        temp.expiryMonth = false;
+      }
+    }
     if ("cvc" in fieldValue) {
       temp.cvc = !fieldValue.cvc;
     }
@@ -50,8 +67,6 @@ function FormHandle() {
     setErrors({ ...temp });
 
     if (fieldValue === values) {
-      console.log(`fieldValue`, fieldValue);
-      console.log(`values`, values);
       return Object.values(temp).every((x) => x === "");
     }
   };
