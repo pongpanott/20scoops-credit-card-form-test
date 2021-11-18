@@ -13,6 +13,24 @@ function App() {
     cvc: false,
   });
 
+  const displayJson = () => {
+    let displayValue = {};
+
+    if (values.number) {
+      displayValue.number = values.number;
+    }
+    if (values.name) {
+      displayValue.name = values.name;
+    }
+    if (values.expiry) {
+      displayValue.expiry = values.expiry;
+    }
+    if (values.cvc) {
+      displayValue.cvc = values.cvc;
+    }
+    return JSON.stringify(displayValue, null, 2);
+  };
+
   return (
     <div className="form-wrapper">
       <CreditCard values={values} isFocus={isFocus} />
@@ -20,7 +38,7 @@ function App() {
         {/* card number */}
         <div className="form-row">
           <input
-            className="form-input"
+            className={errors.number ? "form-input-error" : "form-input"}
             type="text"
             name="number"
             value={values.number}
@@ -32,15 +50,17 @@ function App() {
           />
           <span
             className="error-text"
-            style={{ visibility: errors.number ? "visible" : "hidden" }}
+            style={{
+              visibility: errors.number ? "visible" : "hidden",
+            }}
           >
-            required
+            card number must be 16-digits
           </span>
         </div>
         {/* name */}
         <div className="form-row">
           <input
-            className="form-input"
+            className={errors.name ? "form-input-error" : "form-input"}
             type="text"
             name="name"
             value={values.name}
@@ -62,13 +82,15 @@ function App() {
           <div>
             {/* expire */}
             <input
-              className="half-form-input"
+              className={
+                errors.expiry ? "half-form-input-error" : "half-form-input"
+              }
               type="text"
               name="expiry"
               value={values.expiry}
               onChange={(e) => handleChange(e)}
               maxLength={5}
-              placeholder="Valud Thru"
+              placeholder="Valid Thru"
               onFocus={() => setIsFocus({ ...isFocus, expiry: true })}
               onBlur={() => setIsFocus({ ...isFocus, expiry: false })}
             />
@@ -76,16 +98,24 @@ function App() {
               className="half-error-text"
               style={{
                 visibility:
-                  errors.expiry || errors.expiryMonth ? "visible" : "hidden",
+                  errors.expiry || errors.expiryMonth || errors.expiryYear
+                    ? "visible"
+                    : "hidden",
               }}
             >
-              {errors.expiry ? " required" : "a month must be between 1 - 12"}
+              {errors.expiry
+                ? "please input card expiry date in format MM/YY"
+                : errors.expiryMonth
+                ? "a month must be between 1 - 12"
+                : "a year must not be last year"}
             </span>
           </div>
           <div>
             {/* cvc */}
             <input
-              className="half-form-input"
+              className={
+                errors.cvc ? "half-form-input-error" : "half-form-input"
+              }
               type="text"
               name="cvc"
               value={values.cvc}
@@ -99,7 +129,7 @@ function App() {
               className="half-error-text"
               style={{ visibility: errors.cvc ? "visible" : "hidden" }}
             >
-              required
+              cvc must be 3-digit
             </span>
           </div>
         </div>
@@ -112,10 +142,18 @@ function App() {
         </div>
       </form>
 
-      <pre className="data-preview">
-        <pre>{values ? JSON.stringify(values, null, 2) : {}}</pre>
-        {/* {JSON.stringify({}, null, 2)} */}
-      </pre>
+      <div className="button-wrapper">
+        <h2
+          style={{
+            color: "#222",
+            margin: "18px auto",
+          }}
+        >
+          Values
+        </h2>
+      </div>
+
+      <pre className="data-preview">{displayJson()}</pre>
     </div>
   );
 }

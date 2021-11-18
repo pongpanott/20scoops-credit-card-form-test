@@ -37,6 +37,7 @@ function FormHandle() {
         cvc: value.replace(/^\D/g, ""),
       });
     }
+
     validateForm({ [name]: value });
   };
 
@@ -44,13 +45,13 @@ function FormHandle() {
     let temp = { ...errors };
 
     if ("number" in fieldValue) {
-      temp.number = !fieldValue.number;
+      temp.number = !fieldValue.number || fieldValue.number.length < 19;
     }
     if ("name" in fieldValue) {
       temp.name = !fieldValue.name;
     }
     if ("expiry" in fieldValue) {
-      temp.expiry = !fieldValue.expiry;
+      temp.expiry = !fieldValue.expiry || fieldValue.expiry.length < 5;
     }
     if ("expiry" in fieldValue && fieldValue.expiry.length > 2) {
       let getTwoDigit = fieldValue.expiry.substring(0, 2);
@@ -60,24 +61,33 @@ function FormHandle() {
         temp.expiryMonth = false;
       }
     }
+    if ("expiry" in fieldValue && fieldValue.expiry.length === 5) {
+      let getLastTwoDigit = fieldValue.expiry.substring(3, 6);
+      let thisYear = new Date().getFullYear().toString().substring(2, 4);
+
+      if (getLastTwoDigit < thisYear) {
+        temp.expiryYear = true;
+      } else {
+        temp.expiryYear = false;
+      }
+    }
     if ("cvc" in fieldValue) {
-      temp.cvc = !fieldValue.cvc;
+      temp.cvc = !fieldValue.cvc || fieldValue.cvc.length < 3;
     }
 
     setErrors({ ...temp });
 
     if (fieldValue === values) {
-      return Object.values(temp).every((x) => x === "");
+      return Object.values(temp).every((x) => x === false);
     }
   };
 
   const handleFormSubmit = (e) => {
-    console.log("form submit");
     e.preventDefault();
 
-    console.log(`errors`, errors);
     if (validateForm()) {
-      alert("complete");
+      alert(JSON.stringify(values, null, 2));
+      setValues({ number: "", name: "", expiry: "", cvc: "" });
     }
   };
 
