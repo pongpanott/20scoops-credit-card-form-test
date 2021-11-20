@@ -30,9 +30,7 @@ function CreditCard(props) {
 
   return (
     <div
-      className={
-        isFocus.cvc ? "credit-card-wrapper flip-to-back" : "credit-card-wrapper"
-      }
+      className={`credit-card-wrapper ${isFocus.cvc ? "flip-to-back" : null} `}
     >
       <div className="credit-card-inner">
         <div className="credit-card-front">
@@ -49,20 +47,16 @@ function CreditCard(props) {
           </div>
           <div className="card-expire">
             <div
-              className={
-                isFocus.expiry
-                  ? "expire-text card-text-focus"
-                  : "expire-text card-text"
-              }
+              className={`expire-text ${
+                isFocus.expiry ? "card-text-focus" : "card-text"
+              } `}
             >
               valid thru
             </div>
             <div
-              className={
-                isFocus.expiry
-                  ? "expire-value card-text-focus"
-                  : "expire-value card-text"
-              }
+              className={`expire-text ${
+                isFocus.expiry ? "card-text-focus" : "card-text"
+              } `}
             >
               {displayValidThru()}
             </div>
